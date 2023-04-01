@@ -45,7 +45,7 @@ Adafruit_TFTLCD tft(LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET);
 #define MINPRESSURE 10
 #define MAXPRESSURE 1000
 int u=0;
-
+int count=0;
 
 void setup(void) {
 pinMode(13,OUTPUT);
@@ -223,11 +223,18 @@ if (p.x > 152 && p.x < 175 && p.y > 205 && p.y < 237){
   runbutton();
 }
 
-if (p.x > 214 && p.x < 214 +40 && p.y > 100 && p.y < 100+40){
+if (p.x > 214 && p.x < 214 +40 && p.y > 100 && p.y < 100+40)
+{
+   
   drawselectbuttonpressed();
+  count=count+1;
+  run();
   
-
 }
+else {
+  count=0;
+}
+
 if (p.x > 214 && p.x < 233 && p.y > 180 && p.y < 194){
   drawtriangle1();
   
@@ -249,9 +256,10 @@ if (p.x > 214 && p.x < 214 +40 && p.y > 15 && p.y < 31){
 }
 
 
-int  run(){
+void run(){
   int z=84;
   int q;
+  int t=84;
   int read=analogRead(A5);
   int value=map(read,0,1023,0,9);
   if(value ==1){
@@ -286,7 +294,8 @@ int  run(){
   }
 
   if(u==1){
-    tft.fillRect(z, q, 22,15,BLACKM);
+    t=z;
+    tft.fillRect(t, q, 22,15,BLACKM);
    servo_pin.write(20);
    
   }
@@ -295,7 +304,8 @@ int  run(){
      tft.fillRect(z, q, 22,15,WHITE);
   }
   if(u==2){
-    tft.fillRect(z+26, q, 22,15,BLACKM);
+    t=z+26;
+    tft.fillRect(t, q, 22,15,BLACKM);
    servo_pin.write(40);
   }
   else
@@ -303,7 +313,8 @@ int  run(){
      tft.fillRect(z+26, q, 22,15,WHITE);
   }
     if(u==3){
-    tft.fillRect(z+26*2, q, 22,15,BLACKM);
+    t=z+26*2;
+    tft.fillRect(t, q, 22,15,BLACKM);
 servo_pin.write(60);    
   }
 else
@@ -311,7 +322,8 @@ else
      tft.fillRect(z+26*2, q, 22,15,WHITE);
   }  
   if(u==4){
-    tft.fillRect(z+26*3, q, 22,15,BLACKM);
+    t=z+26*3;
+    tft.fillRect(t, q, 22,15,BLACKM);
    servo_pin.write(80);
 
 
@@ -321,7 +333,8 @@ else
      tft.fillRect(z+26*3, q, 22,15,WHITE);
   }
     if(u==5){
-    tft.fillRect(z+26*4, q, 22,15,BLACKM);
+      t=z+26*4;
+    tft.fillRect(t, q, 22,15,BLACKM);
    
    servo_pin.write(100);
   }
@@ -330,7 +343,8 @@ else
      tft.fillRect(z+26*4, q, 22,15,WHITE);
   }
   if(u==6){
-    tft.fillRect(z+26*5, q, 22,15,BLACKM);
+    t=z+26*5;
+    tft.fillRect(t, q, 22,15,BLACKM);
     servo_pin.write(120);
   }
   else
@@ -338,7 +352,8 @@ else
      tft.fillRect(z+26*5, q, 22,15,WHITE);
   }
   if(u==7){
-    tft.fillRect(z+26*6, q , 22,15,BLACKM);
+    t=z+26*6;
+    tft.fillRect(t, q , 22,15,BLACKM);
     servo_pin.write(140);
 
   }
@@ -348,7 +363,8 @@ else
      tft.fillRect(z+26*6, q, 22,15,WHITE);
   }
   if(u==8){
-    tft.fillRect(z+26*7, q, 22,15,BLACKM);
+    t=z+26*7;
+    tft.fillRect(t, q, 22,15,BLACKM);
     servo_pin.write(160);
   } 
   else
@@ -356,13 +372,24 @@ else
      tft.fillRect(z+26*7, q, 22,15,WHITE);
   } 
     if(u==9){
-    tft.fillRect(z+26*8, q, 22,15,BLACKM);
+      t=z+26*8;
+    tft.fillRect(t, q, 22,15,BLACKM);
     servo_pin.write(180);
   } 
   else
   {
      tft.fillRect(z+26*8, q, 22,15,WHITE);
   } 
+  
+
+  if(count>0){
+    Serial.println(t);
+    Serial.println(q);
+    tft.fillRect(t, q, 22, 15,RED);
+    delay(1000);
+  }
+
+
   if(u>10){
     u=0;
   }
@@ -376,6 +403,8 @@ tft.fillRect(84, i, 22,15,BLACKM);
 /*for(int z=84;z<=292;z+=26){
 tft.fillRect(z, 159, 22,15,BLACKM); }
 }*/}
+
+ 
 void drawselectbuttonpressed()
 {
    tft.fillRoundRect(140,195 ,40,40 ,5, BLUE);
@@ -436,4 +465,3 @@ void drawBorder () {
   tft.fillRect(border, border, (width - border * 2), (height - border * 2), WHITE);
   
 }
-

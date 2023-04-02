@@ -13,9 +13,7 @@ Servo servo_pin;
 #define YM 7  //--> can be a digital pin
 #define XP 6  //--> can be a digital pin
 
-
 TouchScreen ts = TouchScreen(XP, YP, XM, YM, 300);
-
 
 #define LCD_CS A3
 #define LCD_CD A2
@@ -46,23 +44,28 @@ Adafruit_TFTLCD tft(LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET);
 #define MAXPRESSURE 1000
 int u=0;
 int count=0;
-
+int pages=1;
 void setup(void) {
 pinMode(13,OUTPUT);
 pinMode(A5,INPUT);
-
 pinMode(11,OUTPUT);
-
-
-
 servo_pin.attach(11);
+
+
+
 
   Serial.begin(9600);
   tft.reset();
   tft.begin(0x9341);
-
 frontpage();
-  tft.setRotation(1);
+setting();
+if(pages==2){
+graph();
+}
+}
+
+void graph(){
+ tft.setRotation(1);
   tft.fillScreen(WHITE);
 tft.drawLine(81,5,81,178,BLACK);
 tft.drawLine(81,177,315,177,BLACK);
@@ -75,6 +78,7 @@ tft.drawLine(81,177,315,177,BLACK);
   backbox();
   sensorname();
 }
+
 void frontpage(){
 tft.setRotation(1); // Need for the Mega, please changed for your choice or rotation initial
 
@@ -104,20 +108,22 @@ tft.setRotation(1); // Need for the Mega, please changed for your choice or rota
   // Wait touch
 
   waitOneTouch();
-
-   tft.setRotation(1);
-  tft.fillScreen(WHITE);
-tft.drawLine(81,5,81,178,BLACK);
-tft.drawLine(81,177,315,177,BLACK);
-
-
-  button();
-  drawgraph();
-  runbox();
-  deletebox();
-  backbox();
-  sensorname();
-    
+  setting();
+}
+void setting(){
+ 
+tft.setRotation(1);
+tft.fillScreen(WHITE);
+tft.fillRoundRect(30,75,84,84,10,RED);
+  tft.setCursor (45, 100);
+  tft.setTextSize (2);
+  tft.setTextColor(BLACK);
+  tft.println("Train");
+tft.fillRoundRect(200,75,84,84,10,BLUE);
+  tft.setCursor (210, 100);
+  tft.setTextSize (2);
+  tft.setTextColor(BLACK);
+  tft.println("Select");
 }
 void button(){
    tft.fillRoundRect(140,195 ,40,40 ,5, BLACKM);
@@ -214,10 +220,19 @@ Serial.print("X=");
 Serial.println(p.x);
 Serial.print("Y=");
 Serial.println(p.y);
-
+if (p.x > 111 && p.x < 126 && p.y > 70 && p.y < 203){
+   trainingbutt();
+   graph();
+}
+if (p.x > 101 && p.x < 167 && p.y >25 && p.y < 83)
+{
+    sensorbutton();
+    //selectsensor();
+}
 if (p.x > 46 && p.x < 72 && p.y > 253 && p.y < 266){
   backbutton();
-  frontpage();
+  //setting();
+setting();
 }
 if (p.x > 152 && p.x < 175 && p.y > 205 && p.y < 237){
   runbutton();
@@ -397,12 +412,7 @@ if (u<0){
   u=10;
 }
 
-/*for(int i=159;i>=7;i-=19){
-tft.fillRect(84, i, 22,15,BLACKM);
-} */
-/*for(int z=84;z<=292;z+=26){
-tft.fillRect(z, 159, 22,15,BLACKM); }
-}*/}
+}
 
  
 void drawselectbuttonpressed()
@@ -446,10 +456,12 @@ TSPoint waitOneTouch() {
   
     pinMode(XM, OUTPUT); //Pins configures again for TFT control
     pinMode(YP, OUTPUT);
+    
   
   } while((p.z < MINPRESSURE )|| (p.z > MAXPRESSURE));
   
   return p;
+  
 }
 
 
@@ -464,4 +476,14 @@ void drawBorder () {
   tft.fillScreen(RED);
   tft.fillRect(border, border, (width - border * 2), (height - border * 2), WHITE);
   
+}
+void trainingbutt(){
+tft.fillRoundRect(30,75,84,84,10,BLACKM);
+delay(100);
+tft.fillRoundRect(30,75,84,84,10,RED);  
+}
+void sensorbutton(){
+tft.fillRoundRect(200,75,84,84,10,BLACKM);
+delay(100);
+tft.fillRoundRect(200,75,84,84,10,BLUE);  
 }

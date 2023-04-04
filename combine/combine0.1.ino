@@ -45,7 +45,10 @@ Adafruit_TFTLCD tft(LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET);
 int u=1;
 int count=0;
 int pages=1;
-int q;
+int q=159;
+ int t=84;
+ int distance=0;
+ int potval=0;
 int read[12][3];
 void setup(void) {
 pinMode(13,OUTPUT);
@@ -198,6 +201,22 @@ tft.setTextSize(1);
 tft.setTextColor(BLACKM);
 tft.print("Min");
 }
+void sense(){
+  tft.setRotation(1);
+tft.fillScreen(WHITE);
+tft.fillRoundRect(30,75,84,84,10,RED);
+  tft.setCursor (45, 107);
+  tft.setTextSize (2);
+  tft.setTextColor(WHITE);
+  tft.println("Light");
+  
+  tft.fillRoundRect(200,75,84,84,10,BLUE);
+  tft.setCursor (215, 107);
+  tft.setTextSize (2);
+  tft.setTextColor(WHITE);
+  tft.println("Tilt");
+  
+  }
 
 
 
@@ -229,19 +248,19 @@ if (p.x > 111 && p.x < 126 && p.y > 70 && p.y < 203){
 if (p.x > 101 && p.x < 167 && p.y >25 && p.y < 83)
 {
     sensorbutton();
+    sense();
     //selectsensor();
 }
 if (p.x > 46 && p.x < 72 && p.y > 253 && p.y < 266){
   backbutton();
   //setting();
 setting();
+count=0;
 }
 if (p.x > 152 && p.x < 175 && p.y > 205 && p.y < 237){
   runbutton();
-  run;
-  for(int i=0;i<=count;count++){
-    servo_pin.write(20*u);
-  }
+  runmode();
+  
 }
 
 if (p.x > 214 && p.x < 214 +40 && p.y > 100 && p.y < 100+40)
@@ -251,12 +270,18 @@ if (p.x > 214 && p.x < 214 +40 && p.y > 100 && p.y < 100+40)
 
   count=count+1;
   run();
-  if(count<11){
+  if(count<13){
     
   read[count][0]=u;
+  read[count][1]=q;
+  read[count][2]=t;
+  Serial.println("count =");
+  Serial.println(count);
  Serial.println(read[count][0]);
+ Serial.println(read[count][1]);
+ Serial.println(read[count][2]);
   }
-
+  
 }
 
 
@@ -279,13 +304,41 @@ if (p.x > 214 && p.x < 214 +40 && p.y > 15 && p.y < 31){
 
 }
 }
+void runmode(){
+   tft.setRotation(1);
+  tft.fillScreen(CYAN);
+tft.drawLine(81,5,81,178,BLACK);
+tft.drawLine(81,177,315,177,BLACK);
+
+
+  button();
+  drawgraph();
+  runbox();
+  deletebox();
+  backbox();
+  sensorname();
+
+  int mini=10000;
+  int p=0;
+  for(int i=0;i<count;i++){
+     distance=abs(potval-read[count][1]);
+     if (potval< mini){
+      mini=distance;
+    p=read[count][0];
+       
+     }
+     tft.fillRect(read[count][1],read[count][2],22,15,RED);
+        servo_pin.write(p*20);
+        delay(1000);
+  }
+}
 
 
 void run(){
 
   int z=84;
-  int q=159;
-  int t=84;
+ 
+  
   int read=analogRead(A5);
   int value=map(read,0,1023,0,9);
    q=159-19*(value-1);

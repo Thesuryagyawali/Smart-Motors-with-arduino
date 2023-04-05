@@ -260,6 +260,33 @@ count=0;
 if (p.x > 152 && p.x < 175 && p.y > 205 && p.y < 237){
   runbutton();
   runmode();
+ int p=1;
+  for(int i=0;i<count;i++){
+   
+   Serial.println(read[count][1]);
+ Serial.println(read[count][2]);
+  for(int i=1;i<count;i++){
+
+    
+    p=read[i][0];
+    tft.fillRect(read[i][2],read[i][1],22,15,RED);
+    delay(100);
+        servo_pin.write(p*20);
+        delay(100);
+       
+   /*
+   neardis=abs(159-read[i][1]);
+   if (neardis<mini){
+    
+    mini = neardis;
+     p=read[i][0];
+   }
+   servo_pin.write(p*20);
+
+   */
+   
+  } 
+     }
   
 }
 
@@ -275,13 +302,10 @@ if (p.x > 214 && p.x < 214 +40 && p.y > 100 && p.y < 100+40)
   read[count][0]=u;
   read[count][1]=q;
   read[count][2]=t;
-  Serial.println("count =");
-  Serial.println(count);
- Serial.println(read[count][0]);
- Serial.println(read[count][1]);
- Serial.println(read[count][2]);
+
   }
-  
+   tft.fillRect(read[count][2],read[count][1],22,15,GREEN);
+  delay(100);
 }
 
 
@@ -318,20 +342,10 @@ tft.drawLine(81,177,315,177,BLACK);
   backbox();
   sensorname();
 
-  int mini=10000;
-  int p=0;
-  for(int i=0;i<count;i++){
-     distance=abs(potval-read[count][1]);
-     if (potval< mini){
-      mini=distance;
-    p=read[count][0];
-       
-     }
-     tft.fillRect(read[count][1],read[count][2],22,15,RED);
-        servo_pin.write(p*20);
-        delay(1000);
+ 
+    
   }
-}
+
 
 
 void run(){

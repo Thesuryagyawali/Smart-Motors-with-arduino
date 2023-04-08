@@ -261,6 +261,7 @@ count=0;
 if (p.x > 152 && p.x < 175 && p.y > 205 && p.y < 237){
   runbutton();
   runmode();
+<<<<<<< HEAD
  algorithm();
 /*
   for(int i=1;i<count;i++){
@@ -303,6 +304,23 @@ if (p.x > 152 && p.x < 175 && p.y > 205 && p.y < 237){
    }
    servo.write(pos)
    graphdisplay(snsor, pos)
+=======
+ int p=1;
+  for(int i=0;i<count;i++){
+   
+   Serial.println(read[count][1]);
+ Serial.println(read[count][2]);
+  for(int i=1;i<count;i++){
+
+    
+    p=read[i][0];
+    tft.fillRect(read[i][2],read[i][1],22,15,RED);
+    delay(100);
+        servo_pin.write(p*20);
+        delay(100);
+       
+   /*
+>>>>>>> f18ca7e5cd6423b8edd22dad4af26d15e36a1200
    neardis=abs(159-read[i][1]);
    if (neardis<mini){
     
@@ -313,7 +331,12 @@ if (p.x > 152 && p.x < 175 && p.y > 205 && p.y < 237){
 
    */
    
+<<<<<<< HEAD
  
+=======
+  } 
+     }
+>>>>>>> f18ca7e5cd6423b8edd22dad4af26d15e36a1200
   
 }
 
@@ -372,6 +395,7 @@ tft.drawLine(81,177,315,177,BLACK);
  
     
   }
+<<<<<<< HEAD
 int  algorithm(){
 int mapp;
 int y;
@@ -403,6 +427,8 @@ delay(100);
 }
 algorithm();
 }
+=======
+>>>>>>> f18ca7e5cd6423b8edd22dad4af26d15e36a1200
 
 
 

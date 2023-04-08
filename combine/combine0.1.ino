@@ -46,6 +46,7 @@ int u=1;
 int count=0;
 int pages=1;
 int q=159;
+int analog=0;
  int t=84;
  int distance=0;
  int potval=0;
@@ -208,7 +209,7 @@ tft.fillRoundRect(30,75,84,84,10,RED);
   tft.setCursor (45, 107);
   tft.setTextSize (2);
   tft.setTextColor(WHITE);
-  tft.println("Light");
+  tft.println("Pot");
   
   tft.fillRoundRect(200,75,84,84,10,BLUE);
   tft.setCursor (215, 107);
@@ -260,6 +261,59 @@ count=0;
 if (p.x > 152 && p.x < 175 && p.y > 205 && p.y < 237){
   runbutton();
   runmode();
+ algorithm();
+/*
+  for(int i=1;i<count;i++){
+       Serial.println(read[count][1]);
+       Serial.println(read[count][2]);
+    tft.fillRect(read[i][2],read[i][1],22,15,RED);
+      neardis=abs(q-read[i][1]);
+      if (neardis<mini){
+         mini=neardis;
+        p=read[i][0];
+        s=read[i][1];
+        y=read[i][2];
+
+    //tft.fillRect(read[i][2],read[i][1],22,15,RED);
+    
+      }
+      servo_pin.write(p*20);
+      delay(100);
+  }
+     // tft.fillRect(y,s,22,15,GREEN);
+  
+       //delay(100);
+  
+       
+   /*
+  if button pressred
+  {
+
+  }
+   trainind data - read
+
+   sensorsvalue=sensor.read()
+   min=10000
+   for (int i=0:i<count;i++){
+      a=sensorsvalue-read[i][1]
+      if (a<min){
+        min=a
+        pos=read[i][0]
+      }
+   }
+   servo.write(pos)
+   graphdisplay(snsor, pos)
+   neardis=abs(159-read[i][1]);
+   if (neardis<mini){
+    
+    mini = neardis;
+     p=read[i][0];
+   }
+   servo_pin.write(p*20);
+
+   */
+   
+ 
   
 }
 
@@ -275,13 +329,10 @@ if (p.x > 214 && p.x < 214 +40 && p.y > 100 && p.y < 100+40)
   read[count][0]=u;
   read[count][1]=q;
   read[count][2]=t;
-  Serial.println("count =");
-  Serial.println(count);
- Serial.println(read[count][0]);
- Serial.println(read[count][1]);
- Serial.println(read[count][2]);
+
   }
-  
+   tft.fillRect(read[count][2],read[count][1],22,15,GREEN);
+  delay(100);
 }
 
 
@@ -318,29 +369,48 @@ tft.drawLine(81,177,315,177,BLACK);
   backbox();
   sensorname();
 
-  int mini=10000;
-  int p=0;
-  for(int i=0;i<count;i++){
-     distance=abs(potval-read[count][1]);
-     if (potval< mini){
-      mini=distance;
-    p=read[count][0];
-       
-     }
-     tft.fillRect(read[count][1],read[count][2],22,15,RED);
-        servo_pin.write(p*20);
-        delay(1000);
+ 
+    
   }
+int  algorithm(){
+int mapp;
+int y;
+int p;
+int mini=10000,
+analog=analogRead(A5);
+mapp=map(analog,0,1023,0,9);
+y=159-19*(mapp-1);
+
+for(int i=1; i<=count;i++){
+tft.fillRect(read[i][2],read[i][1],22,15,RED);
+analog=analogRead(A5);
+mapp=map(analog,0,1023,0,9);
+y=159-19*(mapp-1);
+int neardis=abs(y-read[i][1]);
+/*if (neardis<mini){
+   mini=neardis;
+   p=read[i][0];
+
 }
+*/
+
+if (y==read[i][1]){
+  p=read[i][0];
+}
+
+servo_pin.write(p*20);
+delay(100);
+}
+algorithm();
+}
+
 
 
 void run(){
 
   int z=84;
- 
-  
-  int read=analogRead(A5);
-  int value=map(read,0,1023,0,9);
+   analog=analogRead(A5);
+  int value=map(analog,0,1023,0,9);
    q=159-19*(value-1);
    
    

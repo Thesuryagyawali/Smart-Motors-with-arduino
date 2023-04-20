@@ -45,7 +45,11 @@ Adafruit_TFTLCD tft(LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET);
 int u=1;
 int count=0;
 int pages=1;
-int q;
+int q=159;
+int analog=0;
+ int t=84;
+ int distance=0;
+ int potval=0;
 int read[12][3];
 void setup(void) {
 pinMode(13,OUTPUT);
@@ -53,20 +57,15 @@ pinMode(A5,INPUT);
 pinMode(12,OUTPUT);
 servo_pin.attach(12);
 
-
-
-
   Serial.begin(9600);
   tft.reset();
   tft.begin(0x9341);
 frontpage();
 setting();
-if(pages==2){
-graph();
-}
+
 }
 
-void graph(){
+void graph(){               // training  mode display code
  tft.setRotation(1);
   tft.fillScreen(WHITE);
 tft.drawLine(81,5,81,178,BLACK);
@@ -81,8 +80,8 @@ tft.drawLine(81,177,315,177,BLACK);
   sensorname();
 }
 
-void frontpage(){
-tft.setRotation(1); // Need for the Mega, please changed for your choice or rotation initial
+void frontpage(){    // karkhana samuha page
+tft.setRotation(1); 
 
   drawBorder();
   
@@ -112,22 +111,33 @@ tft.setRotation(1); // Need for the Mega, please changed for your choice or rota
   waitOneTouch();
   setting();
 }
-void setting(){
+void setting(){    // select sensor page
  
 tft.setRotation(1);
 tft.fillScreen(WHITE);
-tft.fillRoundRect(30,75,84,84,10,RED);
-  tft.setCursor (45, 100);
-  tft.setTextSize (2);
-  tft.setTextColor(BLACK);
-  tft.println("Train");
+tft.fillRoundRect(30,75,84,84,10,BLUE);
+tft.drawRect(40,85,63,45,GREEN);
+tft.fillRect(45,90,53,35,GREEN);
+tft.fillCircle(45, 90+35, 8, CYAN);
+tft.fillRect(40,90+47,10,13,CYAN);
+tft.drawLine(50,90+50,60,90+27,CYAN);
+tft.drawLine(50,90+51,60,90+28,CYAN);
+ 
 tft.fillRoundRect(200,75,84,84,10,BLUE);
-  tft.setCursor (210, 100);
-  tft.setTextSize (2);
-  tft.setTextColor(BLACK);
-  tft.println("Select");
+//tft.drawCircle(220,80,10,GREEN);
+tft.fillCircle(243,115,25,GREEN);
+tft.fillCircle(243,115,10,BLUE);
+tft.fillTriangle(248,115+24,237,115+24,243,115+35,GREEN);
+tft.fillTriangle(248,115-24,237,115-24,243,115-35,GREEN);
+tft.fillTriangle(243-35,115,222,120,222,110,GREEN);
+tft.fillTriangle(243+35,115,222+45,120,222+45,110,GREEN);
+
+ // tft.setCursor (210, 100);
+ // tft.setTextSize (2);
+ // tft.setTextColor(BLACK);
+ // tft.println("Select");
 }
-void button(){
+void button(){                                      // display code 
    tft.fillRoundRect(140,195 ,40,40 ,5, BLACKM);
 tft.fillTriangle(10, 218,55,198 ,55, 238, BLACKM);
 tft.fillTriangle(310,218,265,198,265,238,BLACKM);
@@ -145,28 +155,18 @@ tft.setTextColor(RED);
 tft.print("X");
 }
 void backbox(){
-  tft.fillRoundRect(10,30,35,35,5,BLACKM);
+  tft.fillRoundRect(10,30,35,35,5,BLACKM);        // for the training mode
    tft.fillTriangle(15,45 ,35,32 ,35,58, BLUE);
 }
 
 
 void drawgraph(){
 // line parellel to yaxis
-
-
 for(int y=82;y<=320;y+=26){
-
-
   tft.drawFastVLine(y,5,172,BLACKM);
-
-
 }
 for(int x=5;x<=193;x+=19.5){
   tft.drawFastHLine(82 ,x ,235,BLACKM);
-
-
-
-
 }
 }
 void sensorname(){
@@ -175,8 +175,6 @@ tft.setCursor(105, 60);
 tft.setTextSize(2);
 tft.setTextColor(BLACKM);
 tft.print("ENCODER");
-
-
 // max
 tft.setRotation(1);
 tft.setCursor(62,5);
@@ -184,8 +182,6 @@ tft.setTextSize(1);
 tft.setTextColor(BLACKM);
 tft.print("Max");
 // 180
-
-
 tft.setRotation(1);
 tft.setCursor(300,180);
 tft.setTextSize(1);
@@ -196,16 +192,26 @@ tft.setRotation(1);
 tft.setCursor(62,180);
 tft.setTextSize(1);
 tft.setTextColor(BLACKM);
-tft.print("Min");
+tft.print("Min");  // for the training mode
 }
-
-
-
-
-
-
+void sense(){   // select sensor display code
+  tft.setRotation(1);
+tft.fillScreen(WHITE);
+tft.fillRoundRect(30,75,84,84,10,RED);
+  tft.setCursor (45, 107);
+  tft.setTextSize (2);
+  tft.setTextColor(WHITE);
+  tft.println("Pot");
+  
+  tft.fillRoundRect(200,75,84,84,10,BLUE);
+  tft.setCursor (215, 107);
+  tft.setTextSize (2);
+  tft.setTextColor(WHITE);
+  tft.println("Tilt");
+  
+  }
 void loop() {
-  digitalWrite(13,HIGH);
+  digitalWrite(13,HIGH);            // touch code 
  TSPoint p= ts.getPoint();
  digitalWrite(13,LOW);
 
@@ -229,19 +235,20 @@ if (p.x > 111 && p.x < 126 && p.y > 70 && p.y < 203){
 if (p.x > 101 && p.x < 167 && p.y >25 && p.y < 83)
 {
     sensorbutton();
+    sense();
     //selectsensor();
 }
 if (p.x > 46 && p.x < 72 && p.y > 253 && p.y < 266){
   backbutton();
   //setting();
 setting();
+count=0;
 }
 if (p.x > 152 && p.x < 175 && p.y > 205 && p.y < 237){
   runbutton();
-  run;
-  for(int i=0;i<=count;count++){
-    servo_pin.write(20*u);
-  }
+  runmode();
+ algorithm();
+
 }
 
 if (p.x > 214 && p.x < 214 +40 && p.y > 100 && p.y < 100+40)
@@ -250,13 +257,16 @@ if (p.x > 214 && p.x < 214 +40 && p.y > 100 && p.y < 100+40)
   drawselectbuttonpressed();
 
   count=count+1;
-  run();
-  if(count<11){
+  
+  if(count<13){
     
   read[count][0]=u;
- Serial.println(read[count][0]);
-  }
+  read[count][1]=q;
+  read[count][2]=t;
 
+  }
+   tft.fillRect(read[count][2],read[count][1],22,15,GREEN);
+  delay(100);
 }
 
 
@@ -275,19 +285,74 @@ if (p.x > 214 && p.x < 214 +40 && p.y > 15 && p.y < 31){
  
  
 }
-
-
 }
 }
+void runmode(){
+   tft.setRotation(1);
+  tft.fillScreen(CYAN);
+tft.drawLine(81,5,81,178,BLACK);
+tft.drawLine(81,177,315,177,BLACK);
+  button();
+  drawgraph();
+  runbox();
+  deletebox();
+  backbox();
+  sensorname(); 
+  }
+int  algorithm(){
+int mapp;
+int y;
+int l;
+int mini=10000,
+analog=analogRead(A5);
+mapp=map(analog,0,1023,1,9);
+y=159-19*(mapp-1);
+
+for(int i=1; i<=count;i++){
+tft.fillRect(read[i][2],read[i][1],22,15,RED);
+
+int neardis=abs(y-read[i][1]);
+/*if (neardis<mini){
+   mini=neardis;
+   p=read[i][0];
+
+}
+*/
+
+if (y==read[i][1]){
+  l=read[i][0];
+}
+
+servo_pin.write(l*20);
+delay(100);
+}
+digitalWrite(13,HIGH);            // touch code 
+ TSPoint p= ts.getPoint();
+ digitalWrite(13,LOW);
 
 
+pinMode(XM,OUTPUT);
+pinMode(YP,OUTPUT);
+p.x = map(p.x, TS_MINX, TS_MAXX, 0,tft.height());
+  p.y = map(p.y, TS_MINY, TS_MAXY, 0, tft.width());
+ 
+  int y_set = map(p.x, 0, 240, 0, tft.height());
+  int x_set = map(tft.width() - p.y, 0, 320, 0, tft.width());
+if (p.z >MINPRESSURE && p.z< MAXPRESSURE) {
+if (p.x > 46 && p.x < 72 && p.y > 253 && p.y < 266){
+  
+}
+}
+else{
+  algorithm();
+}
+
+}
 void run(){
 
   int z=84;
-  int q=159;
-  int t=84;
-  int read=analogRead(A5);
-  int value=map(read,0,1023,0,9);
+   analog=analogRead(A5);
+  int value=map(analog,0,1023,1,9);
    q=159-19*(value-1);
    
    
@@ -395,14 +460,11 @@ void drawselectbuttonpressed()
    tft.fillRoundRect(140,195 ,40,40 ,5, BLUE);
    delay(100);
     tft.fillRoundRect(140,195 ,40,40 ,5, BLACKM);
-
-
 }
 void drawtriangle1(){
 tft.fillTriangle(10, 218,55,198 ,55, 238, BLUE);
 delay(100);
 tft.fillTriangle(10, 218,55,198 ,55, 238, BLACKM);
-
 
 }
 void drawtriangle2(){
@@ -422,8 +484,6 @@ void backbutton(){
 }
 TSPoint waitOneTouch() {
 
-  // wait 1 touch to exit function
-  
   TSPoint p;
   
   do {
@@ -439,13 +499,9 @@ TSPoint waitOneTouch() {
   
 }
 
-
-void drawBorder () {
-
-  // Draw a border
-
+void drawBorder () {        // front page display
   uint16_t width = tft.width() - 1;
-  uint16_t height = tft.height() - 1;
+  uint16_t height = tft.height() - 1;      // draw broder
   uint8_t border = 10;
 
   tft.fillScreen(RED);

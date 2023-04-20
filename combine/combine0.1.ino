@@ -45,7 +45,11 @@ Adafruit_TFTLCD tft(LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET);
 int u=1;
 int count=0;
 int pages=1;
-int q;
+int q=159;
+int analog=0;
+ int t=84;
+ int distance=0;
+ int potval=0;
 int read[12][3];
 void setup(void) {
 pinMode(13,OUTPUT);
@@ -198,6 +202,22 @@ tft.setTextSize(1);
 tft.setTextColor(BLACKM);
 tft.print("Min");
 }
+void sense(){
+  tft.setRotation(1);
+tft.fillScreen(WHITE);
+tft.fillRoundRect(30,75,84,84,10,RED);
+  tft.setCursor (45, 107);
+  tft.setTextSize (2);
+  tft.setTextColor(WHITE);
+  tft.println("Pot");
+  
+  tft.fillRoundRect(200,75,84,84,10,BLUE);
+  tft.setCursor (215, 107);
+  tft.setTextSize (2);
+  tft.setTextColor(WHITE);
+  tft.println("Tilt");
+  
+  }
 
 
 
@@ -229,19 +249,95 @@ if (p.x > 111 && p.x < 126 && p.y > 70 && p.y < 203){
 if (p.x > 101 && p.x < 167 && p.y >25 && p.y < 83)
 {
     sensorbutton();
+    sense();
     //selectsensor();
 }
 if (p.x > 46 && p.x < 72 && p.y > 253 && p.y < 266){
   backbutton();
   //setting();
 setting();
+count=0;
 }
 if (p.x > 152 && p.x < 175 && p.y > 205 && p.y < 237){
   runbutton();
-  run;
-  for(int i=0;i<=count;count++){
-    servo_pin.write(20*u);
+  runmode();
+<<<<<<< HEAD
+ algorithm();
+/*
+  for(int i=1;i<count;i++){
+       Serial.println(read[count][1]);
+       Serial.println(read[count][2]);
+    tft.fillRect(read[i][2],read[i][1],22,15,RED);
+      neardis=abs(q-read[i][1]);
+      if (neardis<mini){
+         mini=neardis;
+        p=read[i][0];
+        s=read[i][1];
+        y=read[i][2];
+
+    //tft.fillRect(read[i][2],read[i][1],22,15,RED);
+    
+      }
+      servo_pin.write(p*20);
+      delay(100);
   }
+     // tft.fillRect(y,s,22,15,GREEN);
+  
+       //delay(100);
+  
+       
+   /*
+  if button pressred
+  {
+
+  }
+   trainind data - read
+
+   sensorsvalue=sensor.read()
+   min=10000
+   for (int i=0:i<count;i++){
+      a=sensorsvalue-read[i][1]
+      if (a<min){
+        min=a
+        pos=read[i][0]
+      }
+   }
+   servo.write(pos)
+   graphdisplay(snsor, pos)
+=======
+ int p=1;
+  for(int i=0;i<count;i++){
+   
+   Serial.println(read[count][1]);
+ Serial.println(read[count][2]);
+  for(int i=1;i<count;i++){
+
+    
+    p=read[i][0];
+    tft.fillRect(read[i][2],read[i][1],22,15,RED);
+    delay(100);
+        servo_pin.write(p*20);
+        delay(100);
+       
+   /*
+>>>>>>> f18ca7e5cd6423b8edd22dad4af26d15e36a1200
+   neardis=abs(159-read[i][1]);
+   if (neardis<mini){
+    
+    mini = neardis;
+     p=read[i][0];
+   }
+   servo_pin.write(p*20);
+
+   */
+   
+<<<<<<< HEAD
+ 
+=======
+  } 
+     }
+>>>>>>> f18ca7e5cd6423b8edd22dad4af26d15e36a1200
+  
 }
 
 if (p.x > 214 && p.x < 214 +40 && p.y > 100 && p.y < 100+40)
@@ -251,12 +347,15 @@ if (p.x > 214 && p.x < 214 +40 && p.y > 100 && p.y < 100+40)
 
   count=count+1;
   run();
-  if(count<11){
+  if(count<13){
     
   read[count][0]=u;
- Serial.println(read[count][0]);
-  }
+  read[count][1]=q;
+  read[count][2]=t;
 
+  }
+   tft.fillRect(read[count][2],read[count][1],22,15,GREEN);
+  delay(100);
 }
 
 
@@ -279,15 +378,65 @@ if (p.x > 214 && p.x < 214 +40 && p.y > 15 && p.y < 31){
 
 }
 }
+void runmode(){
+   tft.setRotation(1);
+  tft.fillScreen(CYAN);
+tft.drawLine(81,5,81,178,BLACK);
+tft.drawLine(81,177,315,177,BLACK);
+
+
+  button();
+  drawgraph();
+  runbox();
+  deletebox();
+  backbox();
+  sensorname();
+
+ 
+    
+  }
+<<<<<<< HEAD
+int  algorithm(){
+int mapp;
+int y;
+int p;
+int mini=10000,
+analog=analogRead(A5);
+mapp=map(analog,0,1023,0,9);
+y=159-19*(mapp-1);
+
+for(int i=1; i<=count;i++){
+tft.fillRect(read[i][2],read[i][1],22,15,RED);
+analog=analogRead(A5);
+mapp=map(analog,0,1023,0,9);
+y=159-19*(mapp-1);
+int neardis=abs(y-read[i][1]);
+/*if (neardis<mini){
+   mini=neardis;
+   p=read[i][0];
+
+}
+*/
+
+if (y==read[i][1]){
+  p=read[i][0];
+}
+
+servo_pin.write(p*20);
+delay(100);
+}
+algorithm();
+}
+=======
+>>>>>>> f18ca7e5cd6423b8edd22dad4af26d15e36a1200
+
 
 
 void run(){
 
   int z=84;
-  int q=159;
-  int t=84;
-  int read=analogRead(A5);
-  int value=map(read,0,1023,0,9);
+   analog=analogRead(A5);
+  int value=map(analog,0,1023,0,9);
    q=159-19*(value-1);
    
    

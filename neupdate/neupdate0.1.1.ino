@@ -126,7 +126,7 @@ tft.drawLine(50,90+51,60,90+28,RED);
  
 tft.fillRoundRect(200,75,84,84,10,BLUE);
 //tft.drawCircle(220,80,10,GREEN);
-tft.fillCircle(243,115,25,GREEN);
+tft.fillCircle(243,115,25,GREEN);  // settings UI
 tft.fillCircle(243,115,13,WHITE);
 tft.fillCircle(243,115,9,BLUE);
 

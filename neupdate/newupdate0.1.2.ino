@@ -126,7 +126,7 @@ tft.drawLine(50,90+51,60,90+28,RED);
  
 tft.fillRoundRect(200,75,84,84,10,BLUE);
 //tft.drawCircle(220,80,10,GREEN);
-tft.fillCircle(243,115,25,GREEN);
+tft.fillCircle(243,115,25,GREEN);  // settings UI
 tft.fillCircle(243,115,13,WHITE);
 tft.fillCircle(243,115,9,BLUE);
 
@@ -213,17 +213,38 @@ tft.print("Min");  // for the training mode
 void sense(){   // select sensor display code
   tft.setRotation(1);
 tft.fillScreen(WHITE);
-tft.fillRoundRect(30,75,84,84,10,RED);
-  tft.setCursor (45, 107);
-  tft.setTextSize (2);
-  tft.setTextColor(WHITE);
-  tft.println("Pot");
+tft.fillRoundRect(30,40,70,70,10,BLUE);  //light sensor
+tft.fillRoundRect(60,85,10,16,3,BLACK);
+tft.fillCircle(65,75,14,YELLOW);
+
+tft.fillCircle(65,50,3,YELLOW);
+tft.fillCircle(50,56,3,YELLOW);
+tft.fillCircle(80,56,3,YELLOW);
+
+tft.fillCircle(90,70,3,YELLOW);
+tft.fillCircle(40,70,3,YELLOW);
+
+tft.fillRoundRect(230,40,70,70,10,BLUE); // tilt
+tft.drawCircle(265,75,30,WHITE);
+tft.drawCircle(265,75,29,WHITE);
+tft.fillRect(230,60,70,30,BLUE);
+
+
+
+tft.fillRoundRect(243,63,45,28,6,GREEN);
+tft.fillRect(247,67,40,20,BLUE);
+
+
+tft.fillRoundRect(135,130,70,70,10,BLUE);   // encoder
+tft.fillCircle(170,165,30,GREEN);
+tft.fillRect(135,170,70,27,BLUE);
+tft.fillCircle(170,165,25,BLUE);
+tft.fillTriangle(170,150,163,180,175,180,GREEN);
+
   
-  tft.fillRoundRect(200,75,84,84,10,BLUE);
-  tft.setCursor (215, 107);
-  tft.setTextSize (2);
-  tft.setTextColor(WHITE);
-  tft.println("Tilt");
+  
+  //tft.fillRoundRect(200,75,84,84,10,BLUE);
+  
   
   }
 void loop() {

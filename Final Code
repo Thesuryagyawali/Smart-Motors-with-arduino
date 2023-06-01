@@ -322,56 +322,76 @@ p.x = map(p.x, TS_MINX, TS_MAXX, 0,tft.height());
   int y_set = map(p.x, 0, 240, 0, tft.height());
   int x_set = map(tft.width() - p.y, 0, 320, 0, tft.width());
 if (p.z >MINPRESSURE && p.z< MAXPRESSURE) {
+
+//remove below notes to check calibration points in arduino
 /*Serial.print("X=");
 Serial.println(p.x);
 Serial.print("Y=");
 Serial.println(p.y);
 Serial.print("press =");
 Serial.println("p.z");*/
+
+//for setting button
 if (p.x > 136 && p.x < 136+60 && p.y > 181-60 && p.y < 181){
+  //
   sensor=3;
   setting();
 }
-if (p.x > 44 && p.x < 44+60 && p.y >293-60 && p.y < 293){
- sensor=1;
- setting();
-}
-if (p.x > 87 && p.x < 87+35 && p.y > 308-35 && p.y < 308){
-count=0;
-deletecount();
-graph();
-}
+
 if (p.x > 48 && p.x < 48+60 && p.y > 85-60 && p.y < 85){
+  //
   sensor=2;
   setting();
 }
+if (p.x > 44 && p.x < 44+60 && p.y >293-60 && p.y < 293){
+  //
+ sensor=1;
+ setting();
+}
 
-if (p.x > 78 && p.x < 78+84 && p.y > 291-84 && p.y < 250){
+// Second screen where there are "training mode" and "sensor button"
+//For Training Button
+if (p.x > 120 && p.x < 120+50 && p.y > 250-50 && p.y < 250){
+  //image dimension = tft.fillRoundRect(30,75,84,84,10,BLACKM);
    trainingbutt();
    graph();
 }
-if (p.x > 84 && p.x < 84+84 && p.y >113-84&& p.y < 113)
-{
+//For sensor button
+if (p.x > 120 && p.x < 120+50 && p.y >113-50 && p.y < 113){
+  //image dimension = tft.fillRoundRect(200,75,84,84,10,BLACKM);
     sensorbutton();
     sense();
     //selectsensor();
 }
-if (p.x > 35 && p.x < 35+35 && p.y > 311-35 && p.y < 311){
+
+// Graph screen
+//Back button Calibration
+if (p.x > 10 && p.x < 10+5 && p.y > 275-5 && p.y < 275){
+  //image dimension = tft.fillTriangle(15,45 ,35,32 ,35,58, GREEN);
   backbutton();
   //setting();
 setting();
 count=0;
 }
-if (p.x > 136 && p.x < 136+35 && p.y > 312-35 && p.y < 312){
+// For Delete buttonCalibration
+if (p.x > 108 && p.x < 108+5 && p.y > 273-5 && p.y < 273){
+  //image dimension = tft.fillRoundRect(10,80,35,35,5,BLUE);
+count=0;
+deletecount();
+graph();
+}
+
+//Run button Calibration
+if (p.x > 156 && p.x < 156+35 && p.y > 273-35 && p.y < 273){
+  //image dimension = tft.fillTriangle(40,146.5 ,20,133 ,20,160, BLUE);
   runbutton();
   runmode();
  algorithm();
 
 }
 
-if (p.x > 208 && p.x < 208+40 && p.y > 179-40 && p.y < 179)
-{
-   
+if (p.x > 208 && p.x < 208+40 && p.y > 179-40 && p.y < 179){
+  // image dimension = 
   drawselectbuttonpressed();
 
   count=count+1;
@@ -448,7 +468,7 @@ y=159-19*(mapp-1);
      break;
   default:
 analog=analogRead(A5);
-  mapp=map(analog,335,352,1,9);
+  mapp=map(analog,260,395,1,9);
    y=159-19*(mapp-1);
     break;
   }
@@ -457,16 +477,16 @@ for(int i=1; i<=count;i++){
 tft.fillRect(read[i][2],read[i][1],22,15,RED);
 
 int neardis=abs(y-read[i][1]);
-/*if (neardis<mini){
+if (neardis<mini){
    mini=neardis;
    l=read[i][0];
 
-}*/
-
-
-if (y==read[i][1] ){
-  l=read[i][0];
 }
+
+
+/*if (y==read[i][1] ){
+  l=read[i][0];
+}*/
 
 
 }
@@ -523,7 +543,7 @@ void run(){
      break;
   default:
   analog=analogRead(A5);
-  value=map(analog,335,352,1,9);
+  value=map(analog,260,395,1,9);
    q=159-19*(value-1);
    Serial.print("tilt=");
 
@@ -617,7 +637,9 @@ else
   {
      tft.fillRect(z+26*8, q, 22,15,WHITE);
   } 
-
+  tft.fillRect(t, q, 22,15,BLACK);
+  delay(750);
+  tft.fillRect(t, q, 22,15,WHITE);
 
   if(u>9){               //bug 
     u=1;
@@ -648,7 +670,7 @@ void drawtriangle2(){
 }
 void runbutton(){
 tft.fillTriangle(40,146.5 ,20,133 ,20,160, BLUE);
-delay(1000);
+delay(100);
 tft.fillTriangle(40,146.5 ,20,133 ,20,160, GREEN);
 }
 void backbutton(){

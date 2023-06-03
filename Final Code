@@ -355,6 +355,13 @@ if (p.x > 120 && p.x < 120+50 && p.y > 250-50 && p.y < 250){
   //image dimension = tft.fillRoundRect(30,75,84,84,10,BLACKM);
    trainingbutt();
    graph();
+    Serial.print("X=");
+    Serial.println(p.x);
+    Serial.print("Y=");
+    Serial.println(p.y);
+    Serial.print("press =");
+    Serial.println("p.z");
+    delay(100);
 }
 //For sensor button
 if (p.x > 120 && p.x < 120+50 && p.y >113-50 && p.y < 113){
@@ -362,6 +369,13 @@ if (p.x > 120 && p.x < 120+50 && p.y >113-50 && p.y < 113){
     sensorbutton();
     sense();
     //selectsensor();
+    Serial.print("X=");
+    Serial.println(p.x);
+    Serial.print("Y=");
+    Serial.println(p.y);
+    Serial.print("press =");
+    Serial.println("p.z");
+    delay(100);
 }
 
 // Graph screen
@@ -372,6 +386,13 @@ if (p.x > 10 && p.x < 10+5 && p.y > 275-5 && p.y < 275){
   //setting();
 setting();
 count=0;
+    Serial.print("X=");
+    Serial.println(p.x);
+    Serial.print("Y=");
+    Serial.println(p.y);
+    Serial.print("press =");
+    Serial.println("p.z");
+    delay(100);
 }
 // For Delete buttonCalibration
 if (p.x > 108 && p.x < 108+5 && p.y > 273-5 && p.y < 273){
@@ -379,6 +400,13 @@ if (p.x > 108 && p.x < 108+5 && p.y > 273-5 && p.y < 273){
 count=0;
 deletecount();
 graph();
+    Serial.print("X=");
+    Serial.println(p.x);
+    Serial.print("Y=");
+    Serial.println(p.y);
+    Serial.print("press =");
+    Serial.println("p.z");
+    delay(100);
 }
 
 //Run button Calibration
@@ -387,7 +415,13 @@ if (p.x > 156 && p.x < 156+35 && p.y > 273-35 && p.y < 273){
   runbutton();
   runmode();
  algorithm();
-
+     Serial.print("X=");
+    Serial.println(p.x);
+    Serial.print("Y=");
+    Serial.println(p.y);
+    Serial.print("press =");
+    Serial.println("p.z");
+    delay(100);
 }
 
 if (p.x > 208 && p.x < 208+40 && p.y > 179-40 && p.y < 179){
@@ -456,7 +490,7 @@ y=159-19*(mapp-1);
     break;
   case 2:
   analog=analogRead(A5);
-  mapp=map(analog,260,395,1,9);
+  mapp=map(analog,265,395,1,9);
    y=159-19*(mapp-1);
    //Serial.println(mapp);
      break;
@@ -468,7 +502,7 @@ y=159-19*(mapp-1);
      break;
   default:
 analog=analogRead(A5);
-  mapp=map(analog,260,395,1,9);
+  mapp=map(analog,265,395,1,9);
    y=159-19*(mapp-1);
     break;
   }
@@ -527,7 +561,7 @@ void run(){
     break;
   case 2:
   analog=analogRead(A5);
-  value=map(analog,260,395,1,9);
+  value=map(analog,265,395,1,9);
    q=159-19*(value-1);
    Serial.print("tilt=");
    Serial.println(value);
@@ -543,7 +577,7 @@ void run(){
      break;
   default:
   analog=analogRead(A5);
-  value=map(analog,260,395,1,9);
+  value=map(analog,265,395,1,9);
    q=159-19*(value-1);
    Serial.print("tilt=");
 
@@ -638,7 +672,7 @@ else
      tft.fillRect(z+26*8, q, 22,15,WHITE);
   } 
   tft.fillRect(t, q, 22,15,BLACK);
-  delay(750);
+  delay(500);
   tft.fillRect(t, q, 22,15,WHITE);
 
   if(u>9){               //bug 

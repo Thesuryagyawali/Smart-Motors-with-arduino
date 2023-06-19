@@ -81,24 +81,24 @@ void graph(){               // training  mode display code
   button();
   drawgraph();
   runbox();
-  deletebox();
+  //deletebox();
   backbox();
   sensorname();
 }
 void frontpage(){    // home page
-tft.setRotation(1); 
+tft.setRotation(1);
 
   drawBorder();
-  
+ 
   // Initial screen
-  
+ 
   tft.setCursor (55, 75);
   tft.setTextSize (3.5);
   tft.setTextColor(RED);
   tft.println("Smart Motors");
   tft.setTextColor(BLACK);
 
-  
+ 
   tft.setCursor (75, 120);
   tft.setTextSize (2.9);
   tft.setTextColor(BLACK);
@@ -182,10 +182,11 @@ default:
    
   break;
 }
+count=0;
 
 
 }
-void button(){                                      // display code 
+void button(){                                      // display code
    tft.fillRoundRect(140,195 ,40,40 ,5, BLACKM);
 tft.fillTriangle(10, 218,55,198 ,55, 238, BLACKM);
 tft.fillTriangle(310,218,265,198,265,238,BLACKM);
@@ -194,14 +195,14 @@ void runbox(){
  tft.fillRoundRect(10,130,35,35,5,BLACKM);
  tft.fillTriangle(40,146.5 ,20,133 ,20,160, GREEN);
 }
-void deletebox(){
+/*void deletebox(){
   tft.fillRoundRect(10,80,35,35,5,BLACKM);
     tft.setRotation(1);
 tft.setCursor(17, 84);
 tft.setTextSize(4);
 tft.setTextColor(RED);
 tft.print("X");
-}
+}*/
 void backbox(){
   tft.fillRoundRect(10,30,35,35,5,BLACKM);        // for the training mode
    tft.fillTriangle(15,45 ,35,32 ,35,58, BLUE);
@@ -271,8 +272,6 @@ tft.setCursor(50,115);
 tft.setTextSize(1.5);
 tft.setTextColor(BLACKM);
 tft.print("Light");
-
-
 tft.fillCircle(65,50,3,YELLOW);
 tft.fillCircle(50,56,3,YELLOW);
 tft.fillCircle(80,56,3,YELLOW);
@@ -302,14 +301,14 @@ tft.setCursor(161,205);
 tft.setTextSize(1.5);
 tft.setTextColor(BLACKM);
 tft.print("POT");
-  
-  
+ 
+ 
   //tft.fillRoundRect(200,75,84,84,10,BLUE);
-  
-  
+ 
+ 
   }
 void loop() {
-  digitalWrite(13,HIGH);            // touch code 
+  digitalWrite(13,HIGH);            // touch code
  TSPoint p= ts.getPoint();
  digitalWrite(13,LOW);
 
@@ -324,27 +323,24 @@ p.x = map(p.x, TS_MINX, TS_MAXX, 0,tft.height());
 if (p.z >MINPRESSURE && p.z< MAXPRESSURE) {
 
 //remove below notes to check calibration points in arduino
-/*Serial.print("X=");
+Serial.print("X=");
 Serial.println(p.x);
 Serial.print("Y=");
 Serial.println(p.y);
 Serial.print("press =");
-Serial.println("p.z");*/
+Serial.println("p.z");
 
 //for setting button
 if (p.x > 136 && p.x < 136+60 && p.y > 181-60 && p.y < 181){
-  //
   sensor=3;
   setting();
 }
 
 if (p.x > 48 && p.x < 48+60 && p.y > 85-60 && p.y < 85){
-  //
   sensor=2;
   setting();
 }
 if (p.x > 44 && p.x < 44+60 && p.y >293-60 && p.y < 293){
-  //
  sensor=1;
  setting();
 }
@@ -355,49 +351,52 @@ if (p.x > 120 && p.x < 120+50 && p.y > 250-50 && p.y < 250){
   //image dimension = tft.fillRoundRect(30,75,84,84,10,BLACKM);
    trainingbutt();
    graph();
-    Serial.print("X=");
+   /* Serial.print("X=");
     Serial.println(p.x);
     Serial.print("Y=");
     Serial.println(p.y);
     Serial.print("press =");
     Serial.println("p.z");
-    delay(100);
+    delay(100);*/
 }
 //For sensor button
 if (p.x > 120 && p.x < 120+50 && p.y >113-50 && p.y < 113){
   //image dimension = tft.fillRoundRect(200,75,84,84,10,BLACKM);
+   
     sensorbutton();
     sense();
     //selectsensor();
-    Serial.print("X=");
+   /* Serial.print("X=");
     Serial.println(p.x);
     Serial.print("Y=");
     Serial.println(p.y);
     Serial.print("press =");
     Serial.println("p.z");
-    delay(100);
+    delay(100);*/
 }
 
 // Graph screen
 //Back button Calibration
 if (p.x > 10 && p.x < 10+5 && p.y > 275-5 && p.y < 275){
   //image dimension = tft.fillTriangle(15,45 ,35,32 ,35,58, GREEN);
+ 
   backbutton();
   //setting();
 setting();
-count=0;
+/*
+
     Serial.print("X=");
     Serial.println(p.x);
     Serial.print("Y=");
     Serial.println(p.y);
     Serial.print("press =");
     Serial.println("p.z");
-    delay(100);
+    delay(100);*/
 }
 // For Delete buttonCalibration
-if (p.x > 108 && p.x < 108+5 && p.y > 273-5 && p.y < 273){
+/*if (p.x > 96 && p.x < 96+35 && p.y > 281-35 && p.y < 281){
   //image dimension = tft.fillRoundRect(10,80,35,35,5,BLUE);
-count=0;
+--count;
 deletecount();
 graph();
     Serial.print("X=");
@@ -408,30 +407,30 @@ graph();
     Serial.println("p.z");
     delay(100);
 }
-
+*/
 //Run button Calibration
 if (p.x > 156 && p.x < 156+35 && p.y > 273-35 && p.y < 273){
   //image dimension = tft.fillTriangle(40,146.5 ,20,133 ,20,160, BLUE);
   runbutton();
   runmode();
- algorithm();
-     Serial.print("X=");
+  algorithm();
+    /*Serial.print("X=");
     Serial.println(p.x);
     Serial.print("Y=");
     Serial.println(p.y);
     Serial.print("press =");
     Serial.println("p.z");
-    delay(100);
+    delay(100);*/
 }
 
 if (p.x > 208 && p.x < 208+40 && p.y > 179-40 && p.y < 179){
-  // image dimension = 
+  // image dimension =
   drawselectbuttonpressed();
 
   count=count+1;
-  
+ 
   if(count<13){
-    
+   
   read[count][0]=u;
   read[count][1]=q;
   read[count][2]=t;
@@ -444,14 +443,14 @@ if (p.x > 208 && p.x < 208+40 && p.y > 179-40 && p.y < 179){
 
 if (p.x > 212 && p.x < 212+30 && p.y >267-30 && p.y < 267){
   drawtriangle1();
-  
+ 
   run();
   u=u-1;
 
 }
 if (p.x > 204 && p.x < 204 +30  && p.y > 52-30 && p.y < 52){
   drawtriangle2();
-  
+ 
    run();
   u=u+1;
  
@@ -460,16 +459,16 @@ if (p.x > 204 && p.x < 204 +30  && p.y > 52-30 && p.y < 52){
 }
 }
 void runmode(){
-   tft.setRotation(1);
+  tft.setRotation(1);
   tft.fillScreen(CYAN);
-tft.drawLine(81,5,81,178,BLACK);
-tft.drawLine(81,177,315,177,BLACK);
+  tft.drawLine(81,5,81,178,BLACK);
+  tft.drawLine(81,177,315,177,BLACK);
   button();
   drawgraph();
   runbox();
-  deletebox();
+  //deletebox();
   backbox();
-  sensorname(); 
+  sensorname();
   }
 int  algorithm(){
 int mapp;
@@ -484,7 +483,7 @@ y=159-19*(mapp-1);
   case 1:
   analog=analogRead(A5);
  
-  mapp=map(analog,0,550,1,9);
+  mapp=map(analog,0,130,1,9);
    y=159-19*(mapp-1);
    //Serial.println(value);
     break;
@@ -496,7 +495,7 @@ y=159-19*(mapp-1);
      break;
   case 3:
   analog=analogRead(A5);
-  mapp=map(analog,0,600,1,9);
+  mapp=map(analog,0,1023,1,9);
    y=159-19*(mapp-1);
    
      break;
@@ -526,7 +525,7 @@ if (neardis<mini){
 }
 servo_pin.write(l*20);
 delay(100);
-digitalWrite(13,HIGH);            // touch code 
+digitalWrite(13,HIGH);            // touch code
  TSPoint p= ts.getPoint();
  digitalWrite(13,LOW);
 
@@ -540,7 +539,7 @@ p.x = map(p.x, TS_MINX, TS_MAXX, 0,tft.height());
   int x_set = map(tft.width() - p.y, 0, 320, 0, tft.width());
 if (p.z >MINPRESSURE && p.z< MAXPRESSURE) {
 if (p.x > 46 && p.x < 72 && p.y > 253 && p.y < 266){
-  
+ 
 }
 }
 else{
@@ -555,7 +554,7 @@ void run(){
   {
   case 1:
   analog=analogRead(A5);
-  value=map(analog,0,550,1,9);
+  value=map(analog,0,120,1,9);
    q=159-19*(value-1);
    Serial.println(value);
     break;
@@ -571,7 +570,7 @@ void run(){
      break;
   case 3:
   analog=analogRead(A5);
-  value=map(analog,0,600,1,9);
+  value=map(analog,0,1023,1,9);
    q=159-19*(value-1);
    
      break;
@@ -583,7 +582,7 @@ void run(){
 
     break;
   }
-  
+ 
    if(u==1){
     t=z;
     tft.fillRect(t, q, 22,15,BLACKM);
@@ -657,25 +656,25 @@ else
     t=z+26*7;
     tft.fillRect(t, q, 22,15,BLACKM);
     servo_pin.write(20*u);
-  } 
+  }
   else
   {
      tft.fillRect(z+26*7, q, 22,15,WHITE);
-  } 
+  }
     if(u==9){
       t=z+26*8;
     tft.fillRect(t, q, 22,15,BLACKM);
     servo_pin.write(20*u);
-  } 
+  }
   else
   {
      tft.fillRect(z+26*8, q, 22,15,WHITE);
-  } 
+  }
   tft.fillRect(t, q, 22,15,BLACK);
   delay(500);
   tft.fillRect(t, q, 22,15,WHITE);
 
-  if(u>9){               //bug 
+  if(u>9){               //bug
     u=1;
   }
 else if (u<1){
@@ -712,21 +711,29 @@ void backbutton(){
   delay(100);
   tft.fillTriangle(15,45 ,35,32 ,35,58,BLUE );
 }
+void deletecount(){
+  tft.fillRoundRect(10,80,35,35,5,BLUE);
+    tft.setRotation(1);
+tft.setCursor(17, 84);
+tft.setTextSize(4);
+tft.setTextColor(RED);
+tft.print("X");
+}
 TSPoint waitOneTouch() {
 
   TSPoint p;
-  
+ 
   do {
-    p= ts.getPoint(); 
-  
+    p= ts.getPoint();
+ 
     pinMode(XM, OUTPUT); //Pins configures again for TFT control
     pinMode(YP, OUTPUT);
-    
-  
+   
+ 
   } while((p.z < MINPRESSURE )|| (p.z > MAXPRESSURE));
-  
+ 
   return p;
-  
+ 
 }
 
 void drawBorder () {        // front page display
@@ -736,7 +743,7 @@ void drawBorder () {        // front page display
 
   tft.fillScreen(RED);
   tft.fillRect(border, border, (width - border * 2), (height - border * 2), WHITE);
-  
+ 
 }
 void trainingbutt(){
 tft.fillRoundRect(30,75,84,84,10,BLACKM);
@@ -747,12 +754,4 @@ void sensorbutton(){
 tft.fillRoundRect(200,75,84,84,10,BLACKM);
 delay(100);
 tft.fillRoundRect(200,75,84,84,10,BLUE);  
-}
-void deletecount(){
-  tft.fillRoundRect(10,80,35,35,5,BLUE);
-    tft.setRotation(1);
-tft.setCursor(17, 84);
-tft.setTextSize(4);
-tft.setTextColor(RED);
-tft.print("X");
 }
